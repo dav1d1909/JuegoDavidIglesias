@@ -55,24 +55,6 @@ public class GameScreen extends BaseScreen{
                     float playerY;
                     float goombaY;
                     if(contact.getFixtureA().getUserData().equals("player")){
-                        playerY = contact.getFixtureA().getBody().getPosition().y;
-                        goombaY = contact.getFixtureB().getBody().getPosition().y;
-                    } else{
-                        playerY = contact.getFixtureB().getBody().getPosition().y;
-                        goombaY = contact.getFixtureA().getBody().getPosition().y;
-                    }
-                    if ((playerY-goombaY)> 0.8){
-                        if(contact.getFixtureA().getUserData().equals("goomba")){
-                            cuerposABorrar.add(contact.getFixtureA().getBody());
-                        }
-                        if(contact.getFixtureB().getUserData().equals("goomba")){
-                            cuerposABorrar.add(contact.getFixtureB().getBody());
-                        }
-                    }else{
-                        playerDie();
-                    }
-
-
                 }
                 if (areCollided(contact,"player","floor")){
                     player.setJumping(false);
@@ -81,6 +63,7 @@ public class GameScreen extends BaseScreen{
                     playerWin();
                 }
 
+            }
             }
 
             @Override
@@ -152,23 +135,6 @@ public class GameScreen extends BaseScreen{
         super.hide();
         player.detach();
         player.remove();
-
-        floor.detach();
-        floor.remove();
-        for (int j = 0;j <bloques.length;j++){
-            bloques[j].detach();
-            bloques[j].remove();
-        }
-
-        for (int i = 0;i<goomba.size();i++){
-            goomba.get(i).detach();
-            goomba.get(i).remove();
-        }
-        goomba.clear();
-
-
-        pipe.detach();
-        pipe.remove();
     }
 
     @Override
