@@ -9,12 +9,14 @@ public class MainGame extends Game {
     public GameScreen gameScreen;
     public AssetManager manager;
     public MenuScreen menuScreen;
-    public GameOverScreen gameOverScreen;
-    public GameWinScreen gameWinScreen;
+
     @Override
     public void create() {
 
         manager = new AssetManager();
+
+        manager.load("fondo1.png", Texture.class);
+        manager.load("fondo2.png", Texture.class);
         manager.load("mago1.png", Texture.class);
         manager.load("mago2.png", Texture.class);
         manager.load("floor.jpg", Texture.class);
@@ -30,8 +32,6 @@ public class MainGame extends Game {
 
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
-        gameOverScreen = new GameOverScreen(this);
-        gameWinScreen = new GameWinScreen(this);
 
         setScreen(menuScreen);
 

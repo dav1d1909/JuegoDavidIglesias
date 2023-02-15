@@ -3,6 +3,8 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -13,12 +15,13 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
 
-import entities.FloorEntity;
-import entities.GoombaEntity;
-import entities.PipeEntity;
+
+import javax.naming.ldap.ManageReferralControl;
+
 import entities.PlayerEntity;
 
 public class GameScreen extends BaseScreen{
@@ -26,13 +29,12 @@ public class GameScreen extends BaseScreen{
     private Stage stage;
     private World world;
     PlayerEntity player;
-    FloorEntity floor;
-    FloorEntity[] bloques = new FloorEntity[30];
+    private Image[] images;
+    private Animation<Image> fondos;
 
-    ArrayList<GoombaEntity> goomba = new ArrayList<>();
-    PipeEntity pipe;
+    float stateTime;
 
-    ArrayList<Body> cuerposABorrar = new ArrayList<Body>();
+    //ArrayList<Body> cuerposABorrar = new ArrayList<Body>();
 
     public GameScreen(MainGame game){
         super(game);
@@ -115,39 +117,14 @@ public class GameScreen extends BaseScreen{
         arrayTexturaPlayer.add(texturaPlayer2);
         arrayTexturaPlayer.add(texturaPlayerDie);
         arrayTexturaPlayer.add(texturaPlayerWin);
-        Texture texturaFloor = game.manager.get("floor.jpg");
-        Texture texturaPipe = game.manager.get("pipe.png");
-        Texture texturaGoomba = game.manager.get("goomba.png");
+        images = new Image[2];
+        images[0] = new Image(game.manager.<NinePatch>get("fondo1.png"));
+        images[1] = new Image(game.manager.<NinePatch>get("fondo2.png"));
+        fondos = new Animation<Image>(0.5f,images);
+
 
         player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(0,5f));
-        floor = new FloorEntity(texturaFloor,world,new Vector2(0,0),300,1);
-        for (int j = 0;j <bloques.length;j++){
-            int positionX  = randomWithRange(6,255);
-            int positionY  = randomWithRange(3,6);
-            int width  = randomWithRange(1,5);
-            int height  = randomWithRange(1,2);
-            bloques[j]  = new FloorEntity(texturaFloor,world,new Vector2(positionX,positionY),width,height);
-
-        }
-        for (int i = 0;i <30;i++){
-            int positionX  = randomWithRange(6,255);
-             GoombaEntity g = new GoombaEntity(texturaGoomba,world,new Vector2(positionX,1.5f),player);
-             goomba.add(g);
-        }
-
-        pipe = new PipeEntity(texturaPipe,world,new Vector2(260f,2f));
-
         stage.addActor(player);
-        stage.addActor(pipe);
-        stage.addActor(floor);
-        for (int j = 0;j <bloques.length;j++){
-            stage.addActor(bloques[j]);
-
-        }
-        for (int i = 0;i <goomba.size();i++){
-            stage.addActor(goomba.get(i));
-        }
-
     }
 
     public int randomWithRange(int min, int max){
@@ -159,33 +136,15 @@ public class GameScreen extends BaseScreen{
     public void render(float delta) {
         super.render(delta);
 
-        Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
         world.step(delta,6,2);
+        stateTime += Gdx.graphics.getDeltaTime();
+        Image imageActual = fondos.getKeyFrame(stateTime,true);
+
         stage.draw();
 
-        for (Body b: cuerposABorrar) {
-            for (int i = 0;i< goomba.size();i++){
-                 if (goomba.get(i).body.equals(b)) {
-                     goomba.get(i).die = true;
 
-                     goomba.get(i).detach();
-                     goomba.get(i).remove();
-                     goomba.remove(i);
-
-                 }
-        }
-        }
-        cuerposABorrar.clear();
-        if (player.getX()>150){
-            stage.getCamera().position.x = player.getX() + 170;
-        } else{
-            stage.getCamera().position.x = 320;
-        }
-
-        stage.getCamera().update();
     }
 
     @Override
