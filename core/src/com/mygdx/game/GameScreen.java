@@ -33,6 +33,8 @@ public class GameScreen extends BaseScreen{
     FloorEntity[] paredes;
     private Image fondo;
     private Image fondo2;
+    float color1;
+    float color2;
 
 
     float stateTime;
@@ -52,6 +54,8 @@ public class GameScreen extends BaseScreen{
         fondo2 = new Image(game.manager.get("fondo2.png", Texture.class));
         fondo2.setPosition(0,0);
         fondo2.setSize(640f,320f);
+        color1 = fondo.getColor().a;
+        color2 = fondo2.getColor().a;
         fondo2.getColor().a = 0f;
 
         stateTime = 0f;
@@ -125,14 +129,15 @@ public class GameScreen extends BaseScreen{
        // fondo = new FondoEntity(arrayTexturaFondo);
         player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(5f,5f));
 
-        stage.addActor(fondo);
         stage.addActor(fondo2);
+        stage.addActor(fondo);
+        stage.addActor(player);
         stage.addActor(floor);
         for (FloorEntity f:
              paredes) {
             stage.addActor(f);
         }
-        stage.addActor(player);
+
 
     }
 
@@ -146,16 +151,7 @@ public class GameScreen extends BaseScreen{
         super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        if (delta%2 == 0){
-            if (fondo2.getColor().a == 0f){
-                fondo2.getColor().a = 1f;
-                fondo.getColor().a = 0f;
-            }
-            if(fondo.getColor().a == 0f){
-                fondo.getColor().a = 1f;
-                fondo2.getColor().a = 0f;
-            }
-        }
+        cambiarFondo();
 
         stage.act();
         world.step(delta,6,2);
@@ -170,6 +166,22 @@ public class GameScreen extends BaseScreen{
         super.hide();
         player.detach();
         player.remove();
+
+        fondo.remove();
+        fondo.clear();
+        fondo2.remove();
+        fondo2.clear();
+
+        floor.detach();
+        floor.detach();
+
+        for (FloorEntity f:
+             paredes) {
+            f.detach();
+            f.remove();
+        }
+
+
     }
 
     @Override
@@ -178,6 +190,7 @@ public class GameScreen extends BaseScreen{
 
         stage.dispose();
         world.dispose();
+
     }
 
     public void playerDie(){
@@ -193,6 +206,33 @@ public class GameScreen extends BaseScreen{
                     }
                 })
         ));
+    }
+    public synchronized void cambiarFondo(){
+
+            if (fondo2.getColor().a == 0f){
+                fondo2.addAction(Actions.sequence(
+                        Actions.delay(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                fondo2.getColor().a = color2;
+                                fondo.getColor().a = 0f;
+                            }
+                        })
+                ));
+
+            } else if(fondo.getColor().a == 0f){
+                fondo.addAction(Actions.sequence(
+                        Actions.delay(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                fondo.getColor().a = color1;
+                                fondo2.getColor().a = 0f;
+                            }
+                        })
+                ));
+            }
     }
     public void playerWin(){
 
