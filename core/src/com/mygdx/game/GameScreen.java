@@ -129,8 +129,9 @@ public class GameScreen extends BaseScreen{
        // fondo = new FondoEntity(arrayTexturaFondo);
         player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(5f,5f));
 
-        stage.addActor(fondo2);
         stage.addActor(fondo);
+        //stage.addActor(fondo2);
+
         stage.addActor(player);
         stage.addActor(floor);
         for (FloorEntity f:
@@ -151,7 +152,7 @@ public class GameScreen extends BaseScreen{
         super.render(delta);
         Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        cambiarFondo();
+        //cambiarFondo();
 
         stage.act();
         world.step(delta,6,2);
