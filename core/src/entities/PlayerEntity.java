@@ -69,29 +69,11 @@ public class PlayerEntity extends Actor{
         setPosition((body.getPosition().x-w_player)*Constants.PIXELS_IN_METERS,
                     (body.getPosition().y-h_player)*Constants.PIXELS_IN_METERS);
 
-        if (!die) {
-            if (win){
-                batch.draw(texturas.get(3), getX(), getY(), getWidth(), getHeight());
-            } else if (isJumping()) {
-                batch.draw(texturas.get(4), getX(), getY(), getWidth(), getHeight());
-                //stage.addAction(Actions.sequence(
-                //                Actions.delay(1.5f),
-                //                Actions.run(new Runnable() {
-                //                    @Override
-                //                    public void run() {
-                //                        setJumping(false);
-                //                    }
-                //                })
-                //        ));
-            } else {
                 stateTime += Gdx.graphics.getDeltaTime();
                 Texture texturaActual = animacion.getKeyFrame(stateTime,true);
                 batch.draw(texturaActual,getX(),getY(),getWidth(),getHeight());
-            }
-        }else{
-            batch.draw(texturas.get(2), getX(), getY(), getWidth(), getHeight());
         }
-    }
+
 
     @Override
     public void act(float delta) {

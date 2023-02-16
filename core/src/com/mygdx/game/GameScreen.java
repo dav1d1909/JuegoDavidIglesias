@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,18 +20,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
 
-
-import javax.naming.ldap.ManageReferralControl;
-
+import entities.FloorEntity;
 import entities.PlayerEntity;
+
 
 public class GameScreen extends BaseScreen{
 
     private Stage stage;
     private World world;
     PlayerEntity player;
-    private Image[] images;
-    private Animation<Image> fondos;
+    FloorEntity floor;
+    FloorEntity[] paredes;
+    private Image fondo;
+    private Image fondo2;
+
 
     float stateTime;
 
@@ -42,6 +45,17 @@ public class GameScreen extends BaseScreen{
         stage = new Stage(new FitViewport(640,320));
         world = new World(new Vector2(0,-10),true);
 
+        fondo = new Image(game.manager.get("fondo1.png", Texture.class));
+        fondo.setPosition(0,0);
+        fondo.setSize(640f,320f);
+
+        fondo2 = new Image(game.manager.get("fondo2.png", Texture.class));
+        fondo2.setPosition(0,0);
+        fondo2.setSize(640f,320f);
+        fondo2.getColor().a = 0f;
+
+        stateTime = 0f;
+
         world.setContactListener(new ContactListener() {
 
             private boolean areCollided(Contact contact, Object userA, Object userB){
@@ -51,26 +65,26 @@ public class GameScreen extends BaseScreen{
 
             @Override
             public void beginContact(Contact contact) {
-                if (areCollided(contact,"player","goomba")){
-                    float playerY;
-                    float goombaY;
-                    if(contact.getFixtureA().getUserData().equals("player")){
-                }
-                if (areCollided(contact,"player","floor")){
-                    player.setJumping(false);
-                }
-                if (areCollided(contact,"player","pipe")){
-                    playerWin();
-                }
+               // if (areCollided(contact,"player","goomba")){
+               //     float playerY;
+                //    float goombaY;
+               //     if(contact.getFixtureA().getUserData().equals("player")){
+               // }
+              //  if (areCollided(contact,"player","floor")){
+               //     player.setJumping(false);
+               // }
+               // if (areCollided(contact,"player","pipe")){
+                //    playerWin();
+               // }
 
-            }
+          // }
             }
 
             @Override
             public void endContact(Contact contact) {
-                if (areCollided(contact,"player","floor")){
+             //   if (areCollided(contact,"player","floor")){
                     player.setJumping(true);
-                }
+               // }
             }
 
             @Override
@@ -89,25 +103,37 @@ public class GameScreen extends BaseScreen{
     public void show() {
         super.show();
 
+        //para ver el cuadradito verde de las texturas
         stage.setDebugAll(true);
 
         Texture texturaPlayer =game.manager.get("mago1.png");
         Texture texturaPlayer2 =game.manager.get("mago2.png");
-        Texture texturaPlayerDie= game.manager.get("mariodie.png");
-        Texture texturaPlayerWin= game.manager.get("mariowin.png");
         ArrayList<Texture> arrayTexturaPlayer = new ArrayList<Texture>();
         arrayTexturaPlayer.add(texturaPlayer);
         arrayTexturaPlayer.add(texturaPlayer2);
-        arrayTexturaPlayer.add(texturaPlayerDie);
-        arrayTexturaPlayer.add(texturaPlayerWin);
-        images = new Image[2];
-        images[0] = new Image(game.manager.<NinePatch>get("fondo1.png"));
-        images[1] = new Image(game.manager.<NinePatch>get("fondo2.png"));
-        fondos = new Animation<Image>(0.5f,images);
+        Texture texturaFloor = game.manager.get("floor.png");
+        floor = new FloorEntity(texturaFloor,world,new Vector2(3.56f,0),7.12f,1);
+        paredes = new FloorEntity[2];
+        paredes[0] = new FloorEntity(texturaFloor,world,new Vector2(2.56f,0),1f,7.20f);
+        paredes[1] = new FloorEntity(texturaFloor,world,new Vector2(10.67f,0),1f,7.20f);
+        //Texture texturaFondo =game.manager.get("fondo1.png");
+        //Texture texturaFondo2 =game.manager.get("fondo2.png");
+       // ArrayList<Texture> arrayTexturaFondo = new ArrayList<Texture>();
+       // arrayTexturaFondo.add(texturaFondo);
+        //arrayTexturaFondo.add(texturaFondo2);
 
+       // fondo = new FondoEntity(arrayTexturaFondo);
+        player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(5f,5f));
 
-        player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(0,5f));
+        stage.addActor(fondo);
+        stage.addActor(fondo2);
+        stage.addActor(floor);
+        for (FloorEntity f:
+             paredes) {
+            stage.addActor(f);
+        }
         stage.addActor(player);
+
     }
 
     public int randomWithRange(int min, int max){
@@ -118,14 +144,23 @@ public class GameScreen extends BaseScreen{
     @Override
     public void render(float delta) {
         super.render(delta);
-
+        Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        if (delta%2 == 0){
+            if (fondo2.getColor().a == 0f){
+                fondo2.getColor().a = 1f;
+                fondo.getColor().a = 0f;
+            }
+            if(fondo.getColor().a == 0f){
+                fondo.getColor().a = 1f;
+                fondo2.getColor().a = 0f;
+            }
+        }
 
         stage.act();
         world.step(delta,6,2);
-        stateTime += Gdx.graphics.getDeltaTime();
-        Image imageActual = fondos.getKeyFrame(stateTime,true);
-
         stage.draw();
+
 
 
     }
@@ -154,7 +189,7 @@ public class GameScreen extends BaseScreen{
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.gameOverScreen);
+                       // game.setScreen(game.gameOverScreen);
                     }
                 })
         ));
@@ -168,7 +203,7 @@ public class GameScreen extends BaseScreen{
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.gameWinScreen);
+                    //    game.setScreen(game.gameWinScreen);
                     }
                 })
         ));

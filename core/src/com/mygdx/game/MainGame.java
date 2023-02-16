@@ -15,18 +15,13 @@ public class MainGame extends Game {
 
         manager = new AssetManager();
 
+        manager.load("esquiva.png", Texture.class);
+        manager.load("tirador.png", Texture.class);
+        manager.load("floor.png", Texture.class);
         manager.load("fondo1.png", Texture.class);
         manager.load("fondo2.png", Texture.class);
         manager.load("mago1.png", Texture.class);
         manager.load("mago2.png", Texture.class);
-        manager.load("floor.jpg", Texture.class);
-        manager.load("goomba.png", Texture.class);
-        manager.load("mariodie.png", Texture.class);
-        manager.load("mariowin.png", Texture.class);
-        manager.load("win.png", Texture.class);
-        manager.load("title.png", Texture.class);
-        manager.load("gameover.png", Texture.class);
-        manager.load("pipe.png", Texture.class);
         manager.finishLoading();
 
 
