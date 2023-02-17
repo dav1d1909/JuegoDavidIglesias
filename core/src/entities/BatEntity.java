@@ -23,11 +23,11 @@ public class BatEntity extends Actor{
     public Body body;
     private Fixture fixture;
 
-    private boolean die = false;
+    public boolean die = false;
 
 
     public float h_player = 0.75f;
-    public float w_player = 1f;
+    public float w_player = 0.75f;
 
     public BatEntity(Texture textura, World world, Vector2 position){
         this.textura = textura;
@@ -46,7 +46,7 @@ public class BatEntity extends Actor{
         fixture.setUserData("bat");
         shape.dispose();
 
-        setSize(2f*Constants.PIXELS_IN_METERS,1.5f*Constants.PIXELS_IN_METERS); //45 pixeles son 1 metro real en 640
+        setSize(1.5f*Constants.PIXELS_IN_METERS,1.5f*Constants.PIXELS_IN_METERS); //45 pixeles son 1 metro real en 640
 
     }
     @Override

@@ -79,7 +79,6 @@ public class GameOverScreen extends BaseScreen {
     public void hide() {
         super.hide();
 
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override

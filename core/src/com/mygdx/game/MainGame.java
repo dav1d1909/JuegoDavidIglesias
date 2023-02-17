@@ -24,6 +24,9 @@ public class MainGame extends Game {
         manager.load("mago1.png", Texture.class);
         manager.load("mago2.png", Texture.class);
         manager.load("magoDie.png", Texture.class);
+        manager.load("magoJump.png", Texture.class);
+        manager.load("magoDesliz.png", Texture.class);
+        manager.load("magoWin.png", Texture.class);
         manager.load("bat.png", Texture.class);
        // manager.load("zombie.png", Texture.class);
         manager.finishLoading();
