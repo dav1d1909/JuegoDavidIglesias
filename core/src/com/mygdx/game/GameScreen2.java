@@ -68,6 +68,7 @@ public class GameScreen2 extends BaseScreen{
                     if (!player.isDeslizando()){
                         playerDie();
                     }else{
+                        enemigos--;
                         if (contact.getFixtureA().getUserData().equals("player")){
                             batsABorrar.add(contact.getFixtureB().getBody());
                         }else{
@@ -87,6 +88,7 @@ public class GameScreen2 extends BaseScreen{
                     if(!player.isShooting()){
                         playerDie();
                     } else {
+                        enemigos--;
                         if (contact.getFixtureA().getUserData().equals("player")) {
                             zombiesABorrar.add(contact.getFixtureB().getBody());
                         } else {
@@ -159,7 +161,7 @@ public class GameScreen2 extends BaseScreen{
         Texture texturaZombie = game.manager.get("zombie.png");
         bats = new ArrayList<BatEntity>();
         zombies = new ArrayList<ZombieEntity>();
-        for (int i = 0; i< 15; i++){
+        for (int i = 0; i< 30; i++){
             bats.add(new BatEntity(texturaBat,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
             zombies.add(new ZombieEntity(texturaZombie,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
         }
@@ -203,10 +205,6 @@ public class GameScreen2 extends BaseScreen{
         eRestantes.setText("Enemigos restantes: "+enemigos);
         if (enemigos == 0){
             playerWin();
-        } else{
-            enemigos -= batsABorrar.size();
-            enemigos -= zombiesABorrar.size();
-
         }
 
         for (Body b:

@@ -179,7 +179,7 @@ public class PlayerEntity2 extends Actor{
 
     public synchronized void shoot(){
         setShooting(true);
-        addAction(Actions.sequence(Actions.delay(1f),
+        addAction(Actions.sequence(Actions.delay(0.7f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
@@ -189,7 +189,7 @@ public class PlayerEntity2 extends Actor{
     }
     public void deslizar(){
         setDeslizando(true);
-        addAction(Actions.sequence(Actions.delay(1f),
+        addAction(Actions.sequence(Actions.delay(0.7f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {

@@ -175,7 +175,7 @@ public class PlayerEntity extends Actor{
 
     public void jump(){
         setJumping(true);
-        addAction(Actions.sequence(Actions.delay(1f),
+        addAction(Actions.sequence(Actions.delay(0.7f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
@@ -185,7 +185,7 @@ public class PlayerEntity extends Actor{
     }
     public void deslizar(){
         setDeslizando(true);
-        addAction(Actions.sequence(Actions.delay(1f),
+        addAction(Actions.sequence(Actions.delay(0.7f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
