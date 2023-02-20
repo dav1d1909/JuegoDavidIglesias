@@ -7,7 +7,11 @@ import com.badlogic.gdx.graphics.Texture;
 public class MainGame extends Game {
 
     public GameScreen gameScreen;
+    public GameScreen2 gameScreen2;
+    public GameWinScreen gameWinScreen;
+    public GameWinScreen2 gameWinScreen2;
     public GameOverScreen gameOverScreen;
+    public GameOverScreen2 gameOverScreen2;
     public AssetManager manager;
     public MenuScreen menuScreen;
 
@@ -26,13 +30,19 @@ public class MainGame extends Game {
         manager.load("magoDie.png", Texture.class);
         manager.load("magoJump.png", Texture.class);
         manager.load("magoDesliz.png", Texture.class);
+        manager.load("magoShoot.png", Texture.class);
         manager.load("magoWin.png", Texture.class);
+        manager.load("win.png", Texture.class);
         manager.load("bat.png", Texture.class);
-       // manager.load("zombie.png", Texture.class);
+        manager.load("zombie.png", Texture.class);
         manager.finishLoading();
 
 
         gameScreen = new GameScreen(this);
+        gameScreen2 = new GameScreen2(this);
+        gameWinScreen2 = new GameWinScreen2(this);
+        gameWinScreen = new GameWinScreen(this);
+        gameOverScreen2 = new GameOverScreen2(this);
         gameOverScreen = new GameOverScreen(this);
         menuScreen = new MenuScreen(this);
 

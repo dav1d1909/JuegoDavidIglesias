@@ -12,14 +12,14 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.mygdx.game.Constants;
+import com.mygdx.game.MainGame;
 
 import java.util.ArrayList;
 
-import sun.management.Sensor;
-
-public class PlayerEntity extends Actor{
+public class PlayerEntity2 extends Actor{
 
     private ArrayList<Texture> texturas;
     private World world;
@@ -27,19 +27,23 @@ public class PlayerEntity extends Actor{
     private Fixture fixture;
 
     private boolean die = false;
-    private boolean jumping = false;
+    private boolean shooting = false;
     private boolean win = false;
     private boolean deslizando = false;
 
     public float h_player = 0.75f;
     public float w_player = 0.75f;
+    private Stage stage;
+    private MainGame game;
 
     Animation<Texture> animacion;
 
     float stateTime;
 
 
-    public PlayerEntity(ArrayList<Texture> texturas, World world, Vector2 position){
+    public PlayerEntity2(MainGame game, Stage stage, ArrayList<Texture> texturas, World world, Vector2 position){
+        this.game = game;
+        this.stage = stage;
         this.texturas = texturas;
         this.world = world;
         //para hacer que cambie de sprite
@@ -70,15 +74,15 @@ public class PlayerEntity extends Actor{
 
         setPosition((body.getPosition().x-w_player)*Constants.PIXELS_IN_METERS,
                     (body.getPosition().y-h_player)*Constants.PIXELS_IN_METERS);
-        if(!die && !jumping && !deslizando && !win) {
+        if(!die && !shooting && !deslizando && !win) {
             stateTime += Gdx.graphics.getDeltaTime();
             Texture texturaActual = animacion.getKeyFrame(stateTime,true);
             batch.draw(texturaActual,getX(),getY(),getWidth(),getHeight());
         }else if(die){
                     batch.draw(texturas.get(2),getX(),getY(),getWidth(),getHeight());
-        }else if (jumping){
-                     batch.draw(texturas.get(3),getX(),getY(),getWidth(),getHeight());
-        } else if(deslizando){
+        }else if(shooting){
+            batch.draw(texturas.get(3),getX(),getY(),getWidth(),getHeight());
+        }else if(deslizando){
             batch.draw(texturas.get(4),getX(),getY(),getWidth(),getHeight());
         } else if (win){
             batch.draw(texturas.get(5),getX(),getY(),getWidth(),getHeight());
@@ -103,12 +107,12 @@ public class PlayerEntity extends Actor{
             if (Gdx.input.justTouched()){
             if (Gdx.input.getY()<160){
                 if (Gdx.input.getX()> 320) {
-                    if (!jumping && !deslizando){
-                        jump();
+                    if (!shooting && !deslizando){
+                        shoot();
                     }
 
                 }else if(Gdx.input.getX()< 320){
-                    if(!deslizando && !jumping){
+                    if(!deslizando && !shooting){
                         deslizar();
                     }
                 }
@@ -125,12 +129,12 @@ public class PlayerEntity extends Actor{
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-                    if(!jumping && !deslizando) {
-                        jump();
+                    if(!shooting && !deslizando) {
+                        shoot();
                     }
                 }
             if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-                if(!deslizando && !jumping) {
+                if(!deslizando && !shooting) {
                     deslizar();
                 }
             }
@@ -164,22 +168,22 @@ public class PlayerEntity extends Actor{
         return die;
     }
 
-    public boolean isJumping() {
-        return jumping;
+    public boolean isShooting() {
+        return shooting;
     }
 
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
 
     }
 
-    public void jump(){
-        setJumping(true);
+    public synchronized void shoot(){
+        setShooting(true);
         addAction(Actions.sequence(Actions.delay(1f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        setJumping(false);
+                        setShooting(false);
                     }
                 })));
     }
@@ -200,5 +204,10 @@ public class PlayerEntity extends Actor{
 
     public void setWin(boolean win) {
         this.win = win;
+    }
+
+    public Vector2 getPosition(){
+        Vector2 v = new Vector2(getX(),getY()+3f);
+        return v;
     }
 }

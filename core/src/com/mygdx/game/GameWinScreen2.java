@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class MenuScreen extends BaseScreen {
+public class GameWinScreen2 extends BaseScreen {
 
     private Stage stage;
     private Skin skin;
@@ -20,45 +20,41 @@ public class MenuScreen extends BaseScreen {
     private TextButton play;
     private TextButton play2;
     private Image esquiva;
-    private Image tirador;
 
 
-    public MenuScreen(final MainGame game) {
+    public GameWinScreen2(final MainGame game) {
         super(game);
 
         stage = new Stage(new FitViewport(640,320));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
-        esquiva = new Image(game.manager.get("esquiva.png", Texture.class));
-        tirador = new Image(game.manager.get("tirador.png", Texture.class));
+        esquiva = new Image(game.manager.get("win.png", Texture.class));
 
-        play = new TextButton("Jugar",skin);
+        play = new TextButton("Play again",skin);
         play.addCaptureListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.setScreen(game.gameScreen);
-            }
-        });
-        play2 = new TextButton("Jugar",skin);
-        play2.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(game.gameScreen2);
             }
         });
+        play2 = new TextButton("Back to menu",skin);
+        play2.addCaptureListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.setScreen(game.menuScreen);
+            }
+        });
 
-        esquiva.setPosition(170f-(esquiva.getWidth()/2),220f-(esquiva.getHeight()/2));
-        tirador.setPosition(470f-(tirador.getWidth()/2),220f-(tirador.getHeight()/2));
+        esquiva.setPosition(320f-(esquiva.getWidth()/2),220f-(esquiva.getHeight()/2));
 
         play.setSize(200f,60f);
-        play.setPosition(170f-(play.getWidth()/2),120f-(play.getHeight()/2));
+        play.setPosition(320f-(play.getWidth()/2),130f-(play.getHeight()/2));
         play2.setSize(200f,60f);
-        play2.setPosition(470f-(play.getWidth()/2),120f-(play.getHeight()/2));
+        play2.setPosition(320f-(play.getWidth()/2),30f-(play.getHeight()/2));
 
         stage.addActor(play);
         stage.addActor(play2);
         stage.addActor(esquiva);
-        stage.addActor(tirador);
 
     }
     @Override
@@ -83,7 +79,6 @@ public class MenuScreen extends BaseScreen {
     public void hide() {
         super.hide();
 
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override

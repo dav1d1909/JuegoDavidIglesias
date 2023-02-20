@@ -3,8 +3,6 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -12,41 +10,40 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import java.util.ArrayList;
 
 import entities.BatEntity;
 import entities.FloorEntity;
 import entities.FondoEntity;
-import entities.PlayerEntity;
+import entities.PlayerEntity2;
 import entities.ZombieEntity;
 
 
-public class GameScreen extends BaseScreen{
+public class GameScreen2 extends BaseScreen{
 
     private Skin skin;
     public TextArea eRestantes;
     private Stage stage;
     private World world;
-    PlayerEntity player;
+    PlayerEntity2 player;
     FloorEntity floor;
     FloorEntity[] paredes;
     ArrayList<BatEntity> bats;
     ArrayList<ZombieEntity> zombies;
+
     FondoEntity fondo;
     int enemigos = 30;
 
     ArrayList<Body> batsABorrar = new ArrayList<Body>();
     ArrayList<Body> zombiesABorrar = new ArrayList<Body>();
 
-    public GameScreen(MainGame game){
+    public GameScreen2(MainGame game){
         super(game);
 
         stage = new Stage(new FitViewport(640,320));
@@ -87,16 +84,15 @@ public class GameScreen extends BaseScreen{
                     }
                 }
                 if (areCollided(contact,"player","zombie")){
-                    if (!player.isJumping()){
+                    if(!player.isShooting()){
                         playerDie();
-                    }else{
-                        if (contact.getFixtureA().getUserData().equals("player")){
+                    } else {
+                        if (contact.getFixtureA().getUserData().equals("player")) {
                             zombiesABorrar.add(contact.getFixtureB().getBody());
-                        }else{
+                        } else {
                             zombiesABorrar.add(contact.getFixtureA().getBody());
                         }
                     }
-
                 }
                 if (areCollided(contact,"zombie","floor")){
                     if (contact.getFixtureA().getUserData().equals("floor")){
@@ -129,12 +125,12 @@ public class GameScreen extends BaseScreen{
     public void show() {
         super.show();
         this.enemigos = 30;
-        stage.setDebugAll(false);
+        stage.setDebugAll(true);
 
         Texture texturaPlayer =game.manager.get("mago1.png");
         Texture texturaPlayer2 =game.manager.get("mago2.png");
         Texture texturaPlayer3 =game.manager.get("magoDie.png");
-        Texture texturaPlayer4 =game.manager.get("magoJump.png");
+        Texture texturaPlayer4 =game.manager.get("magoShoot.png");
         Texture texturaPlayer5 =game.manager.get("magoDesliz.png");
         Texture texturaPlayer6 =game.manager.get("magoWin.png");
         ArrayList<Texture> arrayTexturaPlayer = new ArrayList<Texture>();
@@ -144,7 +140,7 @@ public class GameScreen extends BaseScreen{
         arrayTexturaPlayer.add(texturaPlayer4);
         arrayTexturaPlayer.add(texturaPlayer5);
         arrayTexturaPlayer.add(texturaPlayer6);
-        player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(5f,1f));
+        player = new PlayerEntity2(game,stage,arrayTexturaPlayer,world,new Vector2(5f,1f));
 
         Texture texturaFondo =game.manager.get("fondo1.png");
         Texture texturaFondo2 =game.manager.get("fondo2.png");
@@ -187,6 +183,7 @@ public class GameScreen extends BaseScreen{
         }
         stage.addActor(eRestantes);
 
+
     }
 
     public int randomWithRange(int min, int max){
@@ -207,8 +204,8 @@ public class GameScreen extends BaseScreen{
         if (enemigos == 0){
             playerWin();
         } else{
-            enemigos += batsABorrar.size();
-            enemigos += zombiesABorrar.size();
+            enemigos -= batsABorrar.size();
+            enemigos -= zombiesABorrar.size();
 
         }
 
@@ -241,6 +238,7 @@ public class GameScreen extends BaseScreen{
 
 
 
+
     }
 
     @Override
@@ -254,8 +252,8 @@ public class GameScreen extends BaseScreen{
 
         floor.detach();
         floor.remove();
-
         eRestantes.remove();
+
 
         for (int j = 0;j <paredes.length;j++){
             paredes[j].detach();
@@ -272,6 +270,7 @@ public class GameScreen extends BaseScreen{
             zombies.get(j).remove();
         }
 
+
     }
 
     @Override
@@ -284,13 +283,12 @@ public class GameScreen extends BaseScreen{
 
     public void playerDie(){
         player.setDie(true);
-
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.gameOverScreen);
+                        game.setScreen(game.gameOverScreen2);
                         enemigos = 30;
                     }
                 })
@@ -300,19 +298,18 @@ public class GameScreen extends BaseScreen{
     public void playerWin(){
 
         player.setWin(true);
-
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        game.setScreen(game.gameWinScreen);
+                        game.setScreen(game.gameWinScreen2);
                         enemigos = 30;
                     }
                 })
         ));
-
     }
+
 
 
 }
