@@ -220,7 +220,7 @@ public class GameScreen2 extends BaseScreen{
         world.step(delta,6,2);
         stage.draw();
         eRestantes.setText("Enemigos restantes: "+enemigos);
-        if (enemigos == 15){
+        if (enemigos == 0){
             playerWin();
         } else if (enemigos ==25){
             Constants.setEnemySpeed(1.5f);
