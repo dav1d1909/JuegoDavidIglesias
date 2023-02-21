@@ -68,7 +68,7 @@ public class GameOverScreen2 extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        Gdx.gl.glClearColor(0.4f,0.5f,0.8f,1f);
+        Gdx.gl.glClearColor(0.27f,0.1f,0.55f,1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
