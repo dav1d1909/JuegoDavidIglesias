@@ -20,6 +20,7 @@ public class MainGame extends Game {
 
         manager = new AssetManager();
 
+        manager.load("title.png", Texture.class);
         manager.load("esquiva.png", Texture.class);
         manager.load("tirador.png", Texture.class);
         manager.load("floor.png", Texture.class);

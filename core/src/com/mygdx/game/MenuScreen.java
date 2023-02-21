@@ -19,6 +19,7 @@ public class MenuScreen extends BaseScreen {
 
     private TextButton play;
     private TextButton play2;
+    private Image title;
     private Image esquiva;
     private Image tirador;
 
@@ -29,17 +30,18 @@ public class MenuScreen extends BaseScreen {
         stage = new Stage(new FitViewport(640,320));
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
+        title = new Image(game.manager.get("title.png", Texture.class));
         esquiva = new Image(game.manager.get("esquiva.png", Texture.class));
         tirador = new Image(game.manager.get("tirador.png", Texture.class));
 
-        play = new TextButton("Jugar",skin);
+        play = new TextButton("Play",skin);
         play.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 game.setScreen(game.gameScreen);
             }
         });
-        play2 = new TextButton("Jugar",skin);
+        play2 = new TextButton("Play",skin);
         play2.addCaptureListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -47,18 +49,20 @@ public class MenuScreen extends BaseScreen {
             }
         });
 
-        esquiva.setPosition(170f-(esquiva.getWidth()/2),220f-(esquiva.getHeight()/2));
-        tirador.setPosition(470f-(tirador.getWidth()/2),220f-(tirador.getHeight()/2));
+        title.setPosition(320f-(title.getWidth()/2),270f-(title.getHeight()/2));
+        esquiva.setPosition(170f-(esquiva.getWidth()/2),150f-(esquiva.getHeight()/2));
+        tirador.setPosition(470f-(tirador.getWidth()/2),150f-(tirador.getHeight()/2));
 
         play.setSize(200f,60f);
-        play.setPosition(170f-(play.getWidth()/2),120f-(play.getHeight()/2));
+        play.setPosition(170f-(play.getWidth()/2),50f-(play.getHeight()/2));
         play2.setSize(200f,60f);
-        play2.setPosition(470f-(play.getWidth()/2),120f-(play.getHeight()/2));
+        play2.setPosition(470f-(play.getWidth()/2),50f-(play.getHeight()/2));
 
         stage.addActor(play);
         stage.addActor(play2);
         stage.addActor(esquiva);
         stage.addActor(tirador);
+        stage.addActor(title);
 
     }
     @Override
