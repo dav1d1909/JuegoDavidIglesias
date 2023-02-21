@@ -15,7 +15,7 @@ import com.mygdx.game.Constants;
 
 import java.util.ArrayList;
 
-public class ZombieEntity extends Actor{
+public class SkeletonEntity extends Actor{
 
     private ArrayList<Texture> texturas;
     private World world;
@@ -32,10 +32,9 @@ public class ZombieEntity extends Actor{
 
     float stateTime;
 
-    public ZombieEntity(ArrayList<Texture> texturas, World world, Vector2 position){
+    public SkeletonEntity(ArrayList<Texture> texturas, World world, Vector2 position){
         this.texturas = texturas;
         this.world = world;
-
         Texture[]texturass = new Texture[3];
         texturass[0] = texturas.get(0);
         texturass[1] = texturas.get(1);
@@ -52,7 +51,7 @@ public class ZombieEntity extends Actor{
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(w_player,h_player);
         fixture = body.createFixture(shape,1);
-        fixture.setUserData("zombie");
+        fixture.setUserData("skeleton");
         shape.dispose();
 
         setSize(1.5f*Constants.PIXELS_IN_METERS,1.5f*Constants.PIXELS_IN_METERS); //45 pixeles son 1 metro real en 640
@@ -65,9 +64,10 @@ public class ZombieEntity extends Actor{
         setPosition((body.getPosition().x-w_player)*Constants.PIXELS_IN_METERS,
                     (body.getPosition().y-h_player)*Constants.PIXELS_IN_METERS);
 
-        stateTime += Gdx.graphics.getDeltaTime();
-        Texture texturaActual = animacion.getKeyFrame(stateTime, true);
-        batch.draw(texturaActual, getX(), getY(), getWidth(), getHeight());
+            stateTime += Gdx.graphics.getDeltaTime();
+            Texture texturaActual = animacion.getKeyFrame(stateTime, true);
+            batch.draw(texturaActual, getX(), getY(), getWidth(), getHeight());
+
         }
 
 

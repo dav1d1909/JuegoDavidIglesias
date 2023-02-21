@@ -139,6 +139,8 @@ public class GameScreen extends BaseScreen{
         Texture texturaPlayer4 =game.manager.get("magoJump.png");
         Texture texturaPlayer5 =game.manager.get("magoDesliz.png");
         Texture texturaPlayer6 =game.manager.get("magoWin.png");
+        Texture texturaPlayer7 =game.manager.get("mago3.png");
+        Texture texturaPlayer8 =game.manager.get("mago4.png");
         ArrayList<Texture> arrayTexturaPlayer = new ArrayList<Texture>();
         arrayTexturaPlayer.add(texturaPlayer);
         arrayTexturaPlayer.add(texturaPlayer2);
@@ -146,14 +148,12 @@ public class GameScreen extends BaseScreen{
         arrayTexturaPlayer.add(texturaPlayer4);
         arrayTexturaPlayer.add(texturaPlayer5);
         arrayTexturaPlayer.add(texturaPlayer6);
+        arrayTexturaPlayer.add(texturaPlayer7);
+        arrayTexturaPlayer.add(texturaPlayer8);
         player = new PlayerEntity(arrayTexturaPlayer,world,new Vector2(5f,1f));
 
-        Texture texturaFondo =game.manager.get("fondo1.png");
-        Texture texturaFondo2 =game.manager.get("fondo2.png");
-        ArrayList<Texture> arrayTexturaFondo = new ArrayList<Texture>();
-        arrayTexturaFondo.add(texturaFondo);
-        arrayTexturaFondo.add(texturaFondo2);
-        fondo = new FondoEntity(arrayTexturaFondo,world,new Vector2(0,0),640f,320);
+        Texture texturaFondo =game.manager.get("fondo.png");
+        fondo = new FondoEntity(texturaFondo,world,new Vector2(0,0),640f,320);
 
         Texture texturaFloor = game.manager.get("floor.png");
         floor = new FloorEntity(texturaFloor,world,new Vector2(3.56f,0),7.12f,1);
@@ -161,13 +161,27 @@ public class GameScreen extends BaseScreen{
         paredes[0] = new FloorEntity(texturaFloor,world,new Vector2(2.56f,0),1f,7.20f);
         paredes[1] = new FloorEntity(texturaFloor,world,new Vector2(10.67f,0),1f,7.20f);
 
-        Texture texturaBat = game.manager.get("bat.png");
-        Texture texturaZombie = game.manager.get("zombie.png");
+        Texture texturaBat1 = game.manager.get("bat1.png");
+        Texture texturaBat2 = game.manager.get("bat2.png");
+        Texture texturaBat3 = game.manager.get("bat3.png");
+        ArrayList<Texture> arrayTexturaBat = new ArrayList<Texture>();
+        arrayTexturaBat.add(texturaBat1);
+        arrayTexturaBat.add(texturaBat2);
+        arrayTexturaBat.add(texturaBat3);
+
+        Texture texturaZombie1 = game.manager.get("zombie1.png");
+        Texture texturaZombie2 = game.manager.get("zombie2.png");
+        Texture texturaZombie3 = game.manager.get("zombie3.png");
+        ArrayList<Texture> arrayTexturaZombie = new ArrayList<Texture>();
+        arrayTexturaZombie.add(texturaZombie1);
+        arrayTexturaZombie.add(texturaZombie2);
+        arrayTexturaZombie.add(texturaZombie3);
+
         bats = new ArrayList<BatEntity>();
         zombies = new ArrayList<ZombieEntity>();
         for (int i = 0; i< 30; i++){
-            bats.add(new BatEntity(texturaBat,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
-            zombies.add(new ZombieEntity(texturaZombie,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
+            bats.add(new BatEntity(arrayTexturaBat,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
+            zombies.add(new ZombieEntity(arrayTexturaZombie,world,new Vector2(randomWithRange(5,9),randomWithRange(6,100)))) ;
         }
 
 
@@ -209,15 +223,24 @@ public class GameScreen extends BaseScreen{
 
         if (enemigos == 0){
             playerWin();
+        }  else if (enemigos ==25){
+            Constants.setEnemySpeed(1.5f);
+        } else if (enemigos == 15){
+            Constants.setEnemySpeed(2f);
+        } else if (enemigos == 8){
+            Constants.setEnemySpeed(2.5f);
         }
         for (Body b:
              batsABorrar) {
             for (int i = 0;i< bats.size();i++){
                 if (bats.get(i).body.equals(b)){
-                    bats.get(i).die = true;
-                    bats.get(i).detach();
-                    bats.get(i).remove();
-                    bats.remove(i);
+                   // bats.get(i).die = true;
+                            bats.get(i).detach();
+                            bats.get(i).remove();
+                            bats.remove(i);
+
+
+
                 }
             }
         }
@@ -282,7 +305,7 @@ public class GameScreen extends BaseScreen{
 
     public void playerDie(){
         player.setDie(true);
-
+        Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
                 Actions.run(new Runnable() {
@@ -298,7 +321,7 @@ public class GameScreen extends BaseScreen{
     public void playerWin(){
 
         player.setWin(true);
-
+        Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
                 Actions.run(new Runnable() {

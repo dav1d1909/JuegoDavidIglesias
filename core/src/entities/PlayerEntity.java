@@ -43,9 +43,12 @@ public class PlayerEntity extends Actor{
         this.texturas = texturas;
         this.world = world;
         //para hacer que cambie de sprite
-        Texture[]texturass = new Texture[2];
+        Texture[]texturass = new Texture[4];
         texturass[0] = texturas.get(0);
         texturass[1] = texturas.get(1);
+        texturass[2] = texturas.get(6);
+        texturass[3] = texturas.get(7);
+
         animacion = new Animation<Texture>(0.25f,texturass);
 
         BodyDef def = new BodyDef();
@@ -92,22 +95,23 @@ public class PlayerEntity extends Actor{
         super.act(delta);
         if (!die && !win){
             if (Gdx.input.isTouched()){
-                if (Gdx.input.getX()> 320){
+                if (Gdx.input.getY()>Gdx.graphics.getHeight()/2){
+                if (Gdx.input.getX()> Gdx.graphics.getWidth()/2){
                     float velocidadY = body.getLinearVelocity().y;
                     body.setLinearVelocity(new Vector2(Constants.PLAYER_SPEED,velocidadY));
                 } else{
                     float velocidadY = body.getLinearVelocity().y;
                     body.setLinearVelocity(new Vector2(-Constants.PLAYER_SPEED,velocidadY));
                 }
-            }
+            }}
             if (Gdx.input.justTouched()){
-            if (Gdx.input.getY()<160){
-                if (Gdx.input.getX()> 320) {
+            if (Gdx.input.getY()<Gdx.graphics.getHeight()/2){
+                if (Gdx.input.getX()> Gdx.graphics.getWidth()/2) {
                     if (!jumping && !deslizando){
                         jump();
                     }
 
-                }else if(Gdx.input.getX()< 320){
+                }else if(Gdx.input.getX()< Gdx.graphics.getWidth()/2){
                     if(!deslizando && !jumping){
                         deslizar();
                     }
@@ -175,7 +179,7 @@ public class PlayerEntity extends Actor{
 
     public void jump(){
         setJumping(true);
-        addAction(Actions.sequence(Actions.delay(0.7f),
+        addAction(Actions.sequence(Actions.delay(0.8f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
@@ -185,7 +189,7 @@ public class PlayerEntity extends Actor{
     }
     public void deslizar(){
         setDeslizando(true);
-        addAction(Actions.sequence(Actions.delay(0.7f),
+        addAction(Actions.sequence(Actions.delay(0.8f),
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {

@@ -17,36 +17,26 @@ import java.util.ArrayList;
 
 public class FondoEntity extends Actor{
 
-    private ArrayList<Texture>  texturas;
+    private Texture textura;
     private World world;
     private Body body;
     private Fixture fixture;
-    private float stateTime;
-    Animation<Texture> animacion;
 
 
-    public FondoEntity(ArrayList<Texture> texturas, World world, Vector2 position, float width, float height){
+    public FondoEntity(Texture textura, World world, Vector2 position, float width, float height){
 
-        this.texturas = texturas;
+        this.textura = textura;
         this.world = world;
-
-        Texture[]texturass = new Texture[2];
-        texturass[0] = texturas.get(0);
-        texturass[1] = texturas.get(1);
-        animacion = new Animation<Texture>(0.5f,texturass);
 
         setSize(width,height); //45 pixeles son 1 metro real en 640
         setPosition(position.x*Constants.PIXELS_IN_METERS, position.y*Constants.PIXELS_IN_METERS);
-        stateTime = 0f;
 
     }
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
-        stateTime += Gdx.graphics.getDeltaTime();
-        Texture texturaActual = animacion.getKeyFrame(stateTime,true);
-        batch.draw(texturaActual,getX(),getY(),getWidth(),getHeight());
+        batch.draw(textura,getX(),getY(),getWidth(),getHeight());
 
     }
 

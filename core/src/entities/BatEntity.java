@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 public class BatEntity extends Actor{
 
-    private Texture textura;
+    private ArrayList<Texture> texturas;
     private World world;
     public Body body;
     private Fixture fixture;
@@ -29,10 +29,19 @@ public class BatEntity extends Actor{
     public float h_player = 0.75f;
     public float w_player = 0.75f;
 
-    public BatEntity(Texture textura, World world, Vector2 position){
-        this.textura = textura;
+    Animation<Texture> animacion;
+
+    float stateTime;
+
+    public BatEntity(ArrayList<Texture> texturas, World world, Vector2 position){
+        this.texturas = texturas;
         this.world = world;
-        //para hacer que cambie de sprite
+        Texture[]texturass = new Texture[3];
+        texturass[0] = texturas.get(0);
+        texturass[1] = texturas.get(1);
+        texturass[2] = texturas.get(2);
+
+        animacion = new Animation<Texture>(0.25f,texturass);
 
         BodyDef def = new BodyDef();
         def.position.set(position);
@@ -56,7 +65,10 @@ public class BatEntity extends Actor{
         setPosition((body.getPosition().x-w_player)*Constants.PIXELS_IN_METERS,
                     (body.getPosition().y-h_player)*Constants.PIXELS_IN_METERS);
 
-        batch.draw(textura,getX(),getY(),getWidth(),getHeight());
+            stateTime += Gdx.graphics.getDeltaTime();
+            Texture texturaActual = animacion.getKeyFrame(stateTime, true);
+            batch.draw(texturaActual, getX(), getY(), getWidth(), getHeight());
+
         }
 
 
