@@ -45,7 +45,7 @@ public class GameWinScreen extends BaseScreen {
             }
         });
 
-        esquiva.setPosition(320f-(esquiva.getWidth()/2),220f-(esquiva.getHeight()/2));
+        esquiva.setPosition(320f-(esquiva.getWidth()/2),250f-(esquiva.getHeight()/2));
 
         play.setSize(200f,60f);
         play.setPosition(320f-(play.getWidth()/2),130f-(play.getHeight()/2));
