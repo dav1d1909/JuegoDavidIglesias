@@ -11,6 +11,8 @@ public class Constants {
             ENEMY_SPEED=multi;
         } else if(ENEMY_SPEED == 2){
             ENEMY_SPEED=multi;
+        }else if(ENEMY_SPEED == 2.5){
+            ENEMY_SPEED=multi;
         }
 
     }

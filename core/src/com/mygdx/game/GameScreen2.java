@@ -46,6 +46,7 @@ public class GameScreen2 extends BaseScreen{
 
     public GameScreen2(MainGame game){
         super(game);
+        Constants.setEnemySpeed(1f);
 
         stage = new Stage(new FitViewport(640,320));
         world = new World(new Vector2(0,-10),true);
@@ -128,6 +129,7 @@ public class GameScreen2 extends BaseScreen{
     public void show() {
         super.show();
         this.enemigos = 30;
+        Constants.setEnemySpeed(1f);
         stage.setDebugAll(false);
 
         Texture texturaPlayer =game.manager.get("mago1.png");
@@ -218,7 +220,7 @@ public class GameScreen2 extends BaseScreen{
         world.step(delta,6,2);
         stage.draw();
         eRestantes.setText("Enemigos restantes: "+enemigos);
-        if (enemigos == 0){
+        if (enemigos == 15){
             playerWin();
         } else if (enemigos ==25){
             Constants.setEnemySpeed(1.5f);
@@ -263,6 +265,8 @@ public class GameScreen2 extends BaseScreen{
     @Override
     public void hide() {
         super.hide();
+        this.enemigos = 30;
+        Constants.setEnemySpeed(1f);
         player.detach();
         player.remove();
 
@@ -303,6 +307,7 @@ public class GameScreen2 extends BaseScreen{
 
     public void playerDie(){
         player.setDie(true);
+        this.enemigos = 30;
         Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
@@ -310,7 +315,7 @@ public class GameScreen2 extends BaseScreen{
                     @Override
                     public void run() {
                         game.setScreen(game.gameOverScreen2);
-                        enemigos = 30;
+
                     }
                 })
         ));
@@ -319,6 +324,7 @@ public class GameScreen2 extends BaseScreen{
     public void playerWin(){
 
         player.setWin(true);
+        this.enemigos = 30;
         Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
@@ -326,7 +332,7 @@ public class GameScreen2 extends BaseScreen{
                     @Override
                     public void run() {
                         game.setScreen(game.gameWinScreen2);
-                        enemigos = 30;
+
                     }
                 })
         ));

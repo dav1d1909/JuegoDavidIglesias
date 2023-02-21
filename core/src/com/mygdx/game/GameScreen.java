@@ -48,6 +48,7 @@ public class GameScreen extends BaseScreen{
 
     public GameScreen(MainGame game){
         super(game);
+        Constants.setEnemySpeed(1f);
 
         stage = new Stage(new FitViewport(640,320));
         world = new World(new Vector2(0,-10),true);
@@ -131,6 +132,7 @@ public class GameScreen extends BaseScreen{
     public void show() {
         super.show();
         this.enemigos = 30;
+        Constants.setEnemySpeed(1f);
         stage.setDebugAll(false);
 
         Texture texturaPlayer =game.manager.get("mago1.png");
@@ -234,7 +236,7 @@ public class GameScreen extends BaseScreen{
              batsABorrar) {
             for (int i = 0;i< bats.size();i++){
                 if (bats.get(i).body.equals(b)){
-                   // bats.get(i).die = true;
+                            bats.get(i).die = true;
                             bats.get(i).detach();
                             bats.get(i).remove();
                             bats.remove(i);
@@ -267,6 +269,7 @@ public class GameScreen extends BaseScreen{
     @Override
     public void hide() {
         super.hide();
+        Constants.setEnemySpeed(1f);
         player.detach();
         player.remove();
 
@@ -305,6 +308,7 @@ public class GameScreen extends BaseScreen{
 
     public void playerDie(){
         player.setDie(true);
+        this.enemigos = 30;
         Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
@@ -312,7 +316,6 @@ public class GameScreen extends BaseScreen{
                     @Override
                     public void run() {
                         game.setScreen(game.gameOverScreen);
-                        enemigos = 30;
                     }
                 })
         ));
@@ -321,6 +324,7 @@ public class GameScreen extends BaseScreen{
     public void playerWin(){
 
         player.setWin(true);
+        this.enemigos = 30;
         Constants.setEnemySpeed(1f);
         stage.addAction(Actions.sequence(
                 Actions.delay(1.5f),
@@ -328,7 +332,6 @@ public class GameScreen extends BaseScreen{
                     @Override
                     public void run() {
                         game.setScreen(game.gameWinScreen);
-                        enemigos = 30;
                     }
                 })
         ));
